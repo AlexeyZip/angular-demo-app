@@ -1,41 +1,53 @@
 <section class="head">
-  <h1>{{ 'analytics.title' | i18n }}</h1>
-  <p class="muted">{{ 'analytics.subtitle' | i18n }}</p>
+  <h1>{{ "analytics.title" | i18n }}</h1>
+  <p class="muted">{{ "analytics.subtitle" | i18n }}</p>
 </section>
 
 <section class="kpi-grid">
   <article>
-    <span class="k">{{ 'analytics.kpi.projects' | i18n }}</span>
+    <span class="k">{{ "analytics.kpi.projects" | i18n }}</span>
     <strong>{{ overview.kpi.totalProjects }}</strong>
   </article>
   <article>
-    <span class="k">{{ 'analytics.kpi.totalBudget' | i18n }}</span>
-    <strong>{{ overview.kpi.totalBudget | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
+    <span class="k">{{ "analytics.kpi.totalBudget" | i18n }}</span>
+    <strong>{{
+      overview.kpi.totalBudget | currency: "USD" : "symbol" : "1.0-0"
+    }}</strong>
   </article>
   <article>
-    <span class="k">{{ 'analytics.kpi.avgBudget' | i18n }}</span>
-    <strong>{{ overview.kpi.avgBudget | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
+    <span class="k">{{ "analytics.kpi.avgBudget" | i18n }}</span>
+    <strong>{{
+      overview.kpi.avgBudget | currency: "USD" : "symbol" : "1.0-0"
+    }}</strong>
   </article>
   <article>
-    <span class="k">{{ 'analytics.kpi.highRisk' | i18n }}</span>
+    <span class="k">{{ "analytics.kpi.highRisk" | i18n }}</span>
     <strong>{{ overview.kpi.highRiskCount }}</strong>
   </article>
 </section>
 
 <section class="charts">
   <article class="card">
-    <h2>{{ 'analytics.charts.budgetTrend' | i18n }}</h2>
-    <canvas #budgetCanvas role="img" [attr.aria-label]="'analytics.charts.budgetTrend' | i18n"></canvas>
+    <h2>{{ "analytics.charts.budgetTrend" | i18n }}</h2>
+    <canvas
+      #budgetCanvas
+      role="img"
+      [attr.aria-label]="'analytics.charts.budgetTrend' | i18n"
+    ></canvas>
   </article>
   <article class="card">
-    <h2>{{ 'analytics.charts.riskDistribution' | i18n }}</h2>
-    <canvas #riskCanvas role="img" [attr.aria-label]="'analytics.charts.riskDistribution' | i18n"></canvas>
+    <h2>{{ "analytics.charts.riskDistribution" | i18n }}</h2>
+    <canvas
+      #riskCanvas
+      role="img"
+      [attr.aria-label]="'analytics.charts.riskDistribution' | i18n"
+    ></canvas>
   </article>
 </section>
 
 @defer (on viewport) {
   <section class="card">
-    <h2>{{ 'analytics.table.title' | i18n }}</h2>
+    <h2>{{ "analytics.table.title" | i18n }}</h2>
     <ag-grid-angular
       class="table"
       [theme]="agTheme"
@@ -47,5 +59,5 @@
     />
   </section>
 } @placeholder {
-  <section class="card skeleton">{{ 'analytics.loadingTable' | i18n }}</section>
+  <section class="card skeleton">{{ "analytics.loadingTable" | i18n }}</section>
 }
