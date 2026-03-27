@@ -1,0 +1,27 @@
+<section class="head">
+  <h1>{{ 'projects.title' | i18n }}</h1>
+  <a routerLink="/project-studio">{{ 'projects.fromStudio' | i18n }}</a>
+</section>
+
+<ui-input [label]="'projects.search' | i18n" [formControl]="searchControl" />
+
+@if (filtered().length === 0) {
+  <p class="empty">{{ 'projects.empty' | i18n }}</p>
+} @else {
+  <ul class="grid">
+    @for (project of filtered(); track project.id) {
+      <li>
+        <div class="top">
+          <h3>{{ project.name }}</h3>
+          <span class="pill">{{ ('risk.' + project.riskLevel) | i18n }}</span>
+        </div>
+        <p class="code">{{ project.code }}</p>
+        <p class="meta">
+          {{ 'projects.budget' | i18n }}: {{ project.budget | number: '1.0-0' }} USD · {{ 'projects.updated' | i18n }}:
+          {{ project.updatedAt | date: 'short' }}
+        </p>
+        <a [routerLink]="['/projects', project.id]">{{ 'projects.openDetails' | i18n }}</a>
+      </li>
+    }
+  </ul>
+}

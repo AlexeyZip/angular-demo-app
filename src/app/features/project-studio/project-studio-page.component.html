@@ -1,0 +1,146 @@
+<section class="head">
+  <div>
+    <h1>{{ 'projectStudio.title' | i18n }}</h1>
+    <p class="muted">
+      {{ 'projectStudio.desc' | i18n }}
+    </p>
+  </div>
+  <div class="row">
+    <ui-button variant="secondary" (clicked)="saveNow()">{{ 'projectStudio.saveDraft' | i18n }}</ui-button>
+    <ui-button (clicked)="publishNow()">{{ 'projectStudio.publish' | i18n }}</ui-button>
+  </div>
+</section>
+
+@if (facade.loadError$ | async; as loadError) {
+  @if (loadError) {
+    <p class="err">{{ loadError }}</p>
+  }
+}
+@if (validationIssues().length > 0) {
+  <section class="card errors">
+    <h2>{{ 'projectStudio.fixBeforeSave' | i18n }}</h2>
+    <ul>
+      @for (issue of validationIssues(); track issue) {
+        <li>{{ issue }}</li>
+      }
+    </ul>
+  </section>
+}
+
+<form [formGroup]="form" class="form" (submit)="$event.preventDefault()">
+  <section class="card cols-2">
+    <ui-input [label]="'projectStudio.labels.projectName' | i18n" formControlName="name" />
+    <ui-input [label]="'projectStudio.labels.projectCode' | i18n" formControlName="code" />
+    @if (showControlError(form.controls.code, 'codeTaken')) {
+      <p class="err">{{ 'projectStudio.errors.codeTaken' | i18n }}</p>
+    }
+    @if (showControlError(form.controls.code, 'codeValidationFailed')) {
+      <p class="err">{{ 'projectStudio.errors.codeValidationFailed' | i18n }}</p>
+    }
+    @if (showControlError(form.controls.code, 'pattern')) {
+      <p class="err">{{ 'projectStudio.errors.codePattern' | i18n }}</p>
+    }
+    <ui-input [label]="'projectStudio.labels.budget' | i18n" type="text" formControlName="budget" />
+    @if (showControlError(form.controls.budget, 'pattern') || showControlError(form.controls.budget, 'minlength')) {
+      <p class="err">{{ 'projectStudio.errors.budget' | i18n }}</p>
+    }
+    <label class="field-native">
+      <span>{{ 'projectStudio.labels.risk' | i18n }}</span>
+      <select formControlName="riskLevel">
+        <option value="low">{{ 'risk.low' | i18n }}</option>
+        <option value="medium">{{ 'risk.medium' | i18n }}</option>
+        <option value="high">{{ 'risk.high' | i18n }}</option>
+        <option value="critical">{{ 'risk.critical' | i18n }}</option>
+      </select>
+    </label>
+    <label class="check">
+      <input type="checkbox" formControlName="requiresComplianceReview" />
+      {{ 'projectStudio.labels.compliance' | i18n }}
+    </label>
+  </section>
+
+  <section class="card">
+    <ui-textarea [label]="'projectStudio.labels.description' | i18n" formControlName="description" />
+  </section>
+
+  <section class="card cols-2" formGroupName="schedule">
+    <ui-input [label]="'projectStudio.labels.startDate' | i18n" type="text" formControlName="startDate" />
+    <ui-input [label]="'projectStudio.labels.endDate' | i18n" type="text" formControlName="endDate" />
+    @if (form.controls.schedule.errors?.['dateRange']) {
+      <p class="err">{{ 'projectStudio.errors.dateRange' | i18n }}</p>
+    }
+  </section>
+
+  <section class="card">
+    <div class="row-between">
+      <h2>{{ 'projectStudio.labels.stakeholders' | i18n }}</h2>
+      <ui-button variant="ghost" (clicked)="addStakeholder()">{{ 'projectStudio.labels.add' | i18n }}</ui-button>
+    </div>
+    <div formArrayName="stakeholders" class="stack">
+      @for (item of stakeholders.controls; track $index) {
+        <div [formGroupName]="$index" class="array-item cols-3">
+          <ui-input [label]="'users.headers.name' | i18n" formControlName="name" />
+          <ui-input [label]="'users.headers.role' | i18n" formControlName="role" />
+          <ui-input [label]="'users.headers.email' | i18n" type="email" formControlName="email" />
+          <ui-button variant="ghost" (clicked)="removeStakeholder($index)">{{
+            'projectStudio.labels.remove' | i18n
+          }}</ui-button>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="row-between">
+      <h2>{{ 'projectStudio.labels.milestones' | i18n }}</h2>
+      <ui-button variant="ghost" (clicked)="addMilestone()">{{ 'projectStudio.labels.add' | i18n }}</ui-button>
+    </div>
+    <div formArrayName="milestones" class="stack">
+      @for (item of milestones.controls; track $index) {
+        <div [formGroupName]="$index" class="array-item cols-3">
+          <ui-input [label]="'projectStudio.labels.milestoneTitle' | i18n" formControlName="title" />
+          <ui-input [label]="'projectStudio.labels.dueDate' | i18n" formControlName="dueDate" />
+          <label class="check inline">
+            <input type="checkbox" formControlName="done" />
+            {{ 'projectStudio.labels.done' | i18n }}
+          </label>
+          <ui-button variant="ghost" (clicked)="removeMilestone($index)">{{ 'projectStudio.labels.remove' | i18n }}</ui-button>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="card" formGroupName="channels">
+    <h2>{{ 'projectStudio.labels.channels' | i18n }}</h2>
+    <div class="row">
+      <label class="check"><input type="checkbox" formControlName="email" /> {{ 'projectStudio.channels.email' | i18n }}</label>
+      <label class="check"><input type="checkbox" formControlName="sms" /> {{ 'projectStudio.channels.sms' | i18n }}</label>
+      <label class="check"><input type="checkbox" formControlName="slack" /> {{ 'projectStudio.channels.slack' | i18n }}</label>
+    </div>
+  </section>
+</form>
+
+<section class="meta">
+  <span>{{ 'projectStudio.labels.load' | i18n }}: {{ facade.loadStatus$ | async }}</span>
+  <span>{{ 'projectStudio.labels.save' | i18n }}: {{ facade.saveStatus$ | async }}</span>
+  <span>{{ 'projectStudio.labels.publish' | i18n }}: {{ facade.publishStatus$ | async }}</span>
+  <span>{{ 'projectStudio.labels.version' | i18n }}: {{ facade.version$ | async }}</span>
+  @if (facade.lastSavedAt$ | async; as savedAt) {
+    <span>{{ 'projectStudio.labels.lastSaved' | i18n }}: {{ savedAt | date: 'mediumTime' }}</span>
+  }
+  @if (facade.saveError$ | async; as saveError) {
+    @if (saveError) {
+      <span class="err">{{ saveError }}</span>
+    }
+  }
+  @if (facade.publishError$ | async; as publishError) {
+    @if (publishError) {
+      <span class="err">{{ publishError }}</span>
+    }
+  }
+  @if (facade.lastPublishedId$ | async; as publishedId) {
+    @if (publishedId) {
+      <a [routerLink]="['/projects', publishedId]">{{ 'projectStudio.openPublished' | i18n }}</a>
+    }
+  }
+</section>

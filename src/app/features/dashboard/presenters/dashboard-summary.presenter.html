@@ -1,0 +1,20 @@
+@if (summary(); as s) {
+  <ul class="grid">
+    <li>
+      <span class="k">{{ 'dashboard.summary.activeUsers' | i18n }}</span>
+      <span class="v">{{ s.activeUsers }}</span>
+    </li>
+    <li>
+      <span class="k">{{ 'dashboard.summary.openTickets' | i18n }}</span>
+      <span class="v">{{ s.openTickets }}</span>
+    </li>
+    <li>
+      <span class="k">{{ 'dashboard.summary.revenue' | i18n }}</span>
+      <span class="v">{{ s.revenueUsd | number: '1.0-0' }}</span>
+    </li>
+    <li>
+      <span class="k">{{ 'dashboard.summary.generatedAt' | i18n }}</span>
+      <span class="v small">{{ s.generatedAt | date: 'medium' }}</span>
+    </li>
+  </ul>
+}

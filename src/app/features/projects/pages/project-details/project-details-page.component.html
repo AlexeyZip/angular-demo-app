@@ -1,0 +1,32 @@
+<p><a routerLink="/projects">{{ 'projects.backToList' | i18n }}</a></p>
+
+<section class="card">
+  <h1>{{ project.name }}</h1>
+  <p class="sub">{{ project.code }} · {{ ('projects.status.' + project.status) | i18n }}</p>
+  <p>{{ project.description }}</p>
+
+  <ul class="meta">
+    <li>{{ 'projects.budget' | i18n }}: {{ project.budget | number: '1.0-0' }} USD</li>
+    <li>{{ 'projects.risk' | i18n }}: {{ ('risk.' + project.riskLevel) | i18n }}</li>
+    <li>{{ 'projects.created' | i18n }}: {{ project.createdAt | date: 'medium' }}</li>
+    <li>{{ 'projects.updated' | i18n }}: {{ project.updatedAt | date: 'medium' }}</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>{{ 'projects.stakeholders' | i18n }}</h2>
+  <ul>
+    @for (s of project.stakeholders; track s.email) {
+      <li>{{ s.name }} — {{ s.role }} ({{ s.email }})</li>
+    }
+  </ul>
+</section>
+
+<section class="card">
+  <h2>{{ 'projects.milestones' | i18n }}</h2>
+  <ul>
+    @for (m of project.milestones; track m.title) {
+      <li>{{ m.title }} — {{ m.dueDate }} · {{ m.done ? ('projects.done' | i18n) : ('projects.inProgress' | i18n) }}</li>
+    }
+  </ul>
+</section>

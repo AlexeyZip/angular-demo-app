@@ -1,0 +1,98 @@
+<section class="head">
+  <div>
+    <h1>{{ 'dashboard.title' | i18n }}</h1>
+    <p class="muted">{{ 'dashboard.mvvm' | i18n }}</p>
+  </div>
+  <div class="row">
+    <span class="health" role="status" aria-live="polite" [class.ok]="facade.apiHealthy$ | async">{{
+      healthLabel()
+    }}</span>
+    <ui-button variant="secondary" (clicked)="facade.reload()">{{ 'app.refresh' | i18n }}</ui-button>
+  </div>
+</section>
+
+<div class="demo">
+  <h2>{{ 'dashboard.reactiveTitle' | i18n }}</h2>
+  <p class="muted">{{ 'dashboard.reactiveDesc' | i18n }}</p>
+  <ui-input [label]="'dashboard.searchLocal' | i18n" [formControl]="localSearch" inputId="local-search" />
+  <p class="echo">{{ 'dashboard.value' | i18n }}: <strong>{{ localSearch.value }}</strong></p>
+</div>
+
+<section class="quick">
+  <a routerLink="/project-studio">{{ 'dashboard.quick.studio' | i18n }}</a>
+  <a routerLink="/projects">{{ 'dashboard.quick.projects' | i18n }}</a>
+  <a routerLink="/analytics">{{ 'dashboard.quick.analytics' | i18n }}</a>
+</section>
+
+@if (facade.status$ | async; as st) {
+  @if (st === 'loading') {
+    <p class="muted">{{ 'app.loading' | i18n }}</p>
+  }
+  @if (st === 'error') {
+    <p class="err">{{ 'app.error' | i18n }}: {{ facade.error$ | async }}</p>
+  }
+}
+
+<app-dashboard-summary-presenter [summary]="facade.summary$ | async" />
+
+<section class="grid-2">
+  <article class="card">
+    <h3>{{ 'dashboard.insights.highRisk' | i18n }}</h3>
+    @if (highRisk().length === 0) {
+      <p class="muted">{{ 'dashboard.insights.empty' | i18n }}</p>
+    } @else {
+      <ul>
+        @for (item of highRisk(); track item.id) {
+          <li>
+            <a [routerLink]="['/projects', item.id]">{{ item.name }}</a>
+            <span class="tag">{{ ('risk.' + item.riskLevel) | i18n }}</span>
+          </li>
+        }
+      </ul>
+    }
+  </article>
+
+  <article class="card">
+    <h3>{{ 'dashboard.insights.milestones' | i18n }}</h3>
+    @if (milestones().length === 0) {
+      <p class="muted">{{ 'dashboard.insights.empty' | i18n }}</p>
+    } @else {
+      <ul>
+        @for (m of milestones(); track m.projectId + m.title) {
+          <li>
+            <span>{{ m.projectName }} · {{ m.title }}</span>
+            <small>{{ m.dueDate }}</small>
+          </li>
+        }
+      </ul>
+    }
+  </article>
+</section>
+
+<article class="card">
+  <h3>{{ 'dashboard.insights.workload' | i18n }}</h3>
+  @if (workload().length === 0) {
+    <p class="muted">{{ 'dashboard.insights.empty' | i18n }}</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>{{ 'users.headers.name' | i18n }}</th>
+          <th>{{ 'users.headers.role' | i18n }}</th>
+          <th>{{ 'dashboard.insights.tasks' | i18n }}</th>
+          <th>{{ 'dashboard.insights.utilization' | i18n }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (w of workload(); track w.id) {
+          <tr>
+            <td>{{ w.name }}</td>
+            <td>{{ w.role }}</td>
+            <td>{{ w.openTasks }}</td>
+            <td>{{ w.utilization }}%</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</article>

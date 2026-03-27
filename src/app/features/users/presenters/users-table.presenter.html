@@ -1,0 +1,20 @@
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>{{ 'users.headers.name' | i18n }}</th>
+        <th>{{ 'users.headers.role' | i18n }}</th>
+        <th>{{ 'users.headers.email' | i18n }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (u of users(); track u.id) {
+        <tr (click)="rowClick.emit(u.id)">
+          <td>{{ u.name }}</td>
+          <td><span class="pill">{{ u.role }}</span></td>
+          <td class="mono">{{ u.email }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,153 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.muted {
+  color: #64748b;
+  margin-top: 0.35rem;
+  line-height: 1.45;
+  max-width: 62ch;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.array-item {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid #f1f5f9;
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.row,
+.row-between {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.row-between {
+  justify-content: space-between;
+}
+
+.field-native {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font: inherit;
+}
+
+.field-native span {
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.field-native select {
+  font: inherit;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inline {
+  margin-top: 1.25rem;
+}
+
+.meta {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.meta a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.meta a:hover {
+  text-decoration: underline;
+}
+
+.err {
+  color: #b91c1c;
+  margin: 0;
+}
+
+.errors {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.errors h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #991b1b;
+}
+
+.errors ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #991b1b;
+  display: grid;
+  gap: 0.2rem;
+}
+
+@media (max-width: 860px) {
+  .cols-2,
+  .cols-3 {
+    grid-template-columns: 1fr;
+  }
+  .inline {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,164 @@
+<section class="card head">
+  <h1>{{ 'planning.title' | i18n }}</h1>
+  <p class="muted">{{ 'planning.subtitle' | i18n }}</p>
+
+  <div class="toolbar">
+    <label>
+      <span>{{ 'planning.strategy' | i18n }}</span>
+      <select [formControl]="strategyControl">
+        <option value="balanced">{{ 'planning.strategies.balanced' | i18n }}</option>
+        <option value="value-first">{{ 'planning.strategies.valueFirst' | i18n }}</option>
+        <option value="risk-first">{{ 'planning.strategies.riskFirst' | i18n }}</option>
+      </select>
+    </label>
+    <button type="button" (click)="rerun()">{{ 'planning.recalculate' | i18n }}</button>
+    <label>
+      <span>{{ 'planning.teamFocus' | i18n }}</span>
+      <select [formControl]="teamControl">
+        <option value="all">{{ 'planning.teams.all' | i18n }}</option>
+        @for (team of teamOptions(); track team.id) {
+          <option [value]="team.id">{{ team.name }}</option>
+        }
+      </select>
+    </label>
+  </div>
+</section>
+
+@if (result(); as vm) {
+  <section class="card">
+    <h3>{{ 'planning.teamTree' | i18n }}</h3>
+    <ul class="tree">
+      @for (row of treeRows(); track row.id) {
+        <li class="tree-row">
+          <span class="guides">
+            @for (hasNext of row.ancestorHasNext; track $index) {
+              <span class="guide" [class.active]="hasNext"></span>
+            }
+            <span class="branch" [class.last]="row.isLast"></span>
+          </span>
+          <button class="toggle" type="button" [disabled]="!row.hasChildren" (click)="toggleTeam(row)">
+            @if (row.hasChildren) {
+              {{ isCollapsed(row.id) ? '▸' : '▾' }}
+            } @else {
+              •
+            }
+          </button>
+          <span class="node">{{ row.name }}</span>
+          <span class="meta">
+            {{ 'planning.capacityLine' | i18n }}: {{ row.used }} / {{ row.capacity }}
+          </span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="card">
+    <h3>{{ 'planning.graphTitle' | i18n }}</h3>
+    <div class="legend">
+      <span class="legend-item"><i class="dot scheduled"></i>{{ 'planning.legend.scheduled' | i18n }}</span>
+      <span class="legend-item"><i class="dot blocked"></i>{{ 'planning.legend.blocked' | i18n }}</span>
+      <span class="legend-item"><i class="line"></i>{{ 'planning.legend.dependsOn' | i18n }}</span>
+    </div>
+    <div class="graph-wrap">
+      <svg [attr.viewBox]="'0 0 ' + graph().width + ' ' + graph().height" [attr.width]="graph().width" [attr.height]="graph().height">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="6" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L10,3 L0,6 z" class="arrow-head" />
+          </marker>
+        </defs>
+        @for (edge of graph().edges; track $index) {
+          <line
+            [attr.x1]="edge.fromX"
+            [attr.y1]="edge.fromY"
+            [attr.x2]="edge.toX"
+            [attr.y2]="edge.toY"
+            class="edge"
+            [class.active]="edge.active"
+            [class.dimmed]="edge.dimmed"
+            marker-end="url(#arrow)"
+          />
+        }
+        @for (node of graph().nodes; track node.id) {
+          <g
+            [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"
+            (mouseenter)="onNodeHover(node.id)"
+            (mouseleave)="onNodeHover(null)"
+            (click)="onNodeClick(node.id)"
+            (keydown)="onNodeKeydown($event, node.id)"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="node.title + ', ' + ('planning.node.team' | i18n) + ': ' + node.team"
+          >
+            <rect
+              class="node-box"
+              [class.blocked]="node.status === 'blocked'"
+              [class.active]="node.active"
+              [class.linked]="node.linked"
+              [class.dimmed]="node.dimmed"
+              rx="8"
+              ry="8"
+              width="152"
+              height="48"
+            />
+            <text x="10" y="19" class="node-title">{{ node.title }}</text>
+            <text x="10" y="34" class="node-meta">L{{ node.level }} · {{ node.team }}</text>
+          </g>
+        }
+      </svg>
+    </div>
+  </section>
+
+  @if (selectedNode(); as node) {
+    <section class="card">
+      <h3>{{ 'planning.nodeDetails' | i18n }}</h3>
+      <p><strong>{{ node.title }}</strong></p>
+      <p class="meta">{{ 'planning.node.team' | i18n }}: {{ node.team }}</p>
+      <p class="meta">{{ 'planning.node.effort' | i18n }}: {{ node.effort }}</p>
+      <p class="meta">{{ 'planning.node.value' | i18n }}: {{ node.value }}</p>
+      <p class="meta">{{ 'planning.node.risk' | i18n }}: {{ node.risk }}</p>
+      <p class="meta">{{ 'planning.node.dependsOn' | i18n }}: {{ node.dependsOn.length ? node.dependsOn.join(', ') : ('planning.none' | i18n) }}</p>
+    </section>
+  }
+
+  <section class="grid">
+    <article class="card">
+      <h3>{{ 'planning.metrics' | i18n }}</h3>
+      <ul>
+        <li>{{ 'planning.metric.scheduled' | i18n }}: {{ vm.metrics['scheduledCount'] }}</li>
+        <li>{{ 'planning.metric.blocked' | i18n }}: {{ vm.metrics['blockedCount'] }}</li>
+        <li>{{ 'planning.metric.total' | i18n }}: {{ vm.metrics['totalItems'] }}</li>
+        <li>{{ 'planning.metric.edges' | i18n }}: {{ vm.metrics['dependencyEdges'] }}</li>
+        <li>{{ 'planning.metric.capacity' | i18n }}: {{ vm.metrics['usedCapacity'] }}</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h3>{{ 'planning.execution' | i18n }}</h3>
+      <ol>
+        @for (step of filteredExecution(); track step.itemId) {
+          <li>
+            <strong>{{ step.title }}</strong> · {{ step.team }} ·
+            {{ 'planning.score' | i18n }}: {{ step.score }}
+          </li>
+        } @empty {
+          <li class="muted">{{ 'planning.empty' | i18n }}</li>
+        }
+      </ol>
+    </article>
+
+    <article class="card">
+      <h3>{{ 'planning.blocked' | i18n }}</h3>
+      <ul>
+        @for (item of filteredBlocked(); track item.id) {
+          <li>{{ item.title }} ({{ item.effort }})</li>
+        } @empty {
+          <li class="muted">{{ 'planning.noBlocked' | i18n }}</li>
+        }
+      </ul>
+    </article>
+  </section>
+} @else if (loading()) {
+  <section class="card">{{ 'app.loading' | i18n }}</section>
+} @else if (error()) {
+  <section class="card error">{{ error() }}</section>
+}

@@ -1,0 +1,24 @@
+<section class="head">
+  <div>
+    <h1>{{ 'users.title' | i18n }}</h1>
+    <p class="muted">
+      {{ 'users.desc' | i18n }}
+    </p>
+  </div>
+  <ui-button variant="secondary" (clicked)="facade.reload()">{{ 'app.reload' | i18n }}</ui-button>
+</section>
+
+<ui-input
+  [label]="'users.filterLabel' | i18n"
+  [formControl]="filter"
+  inputId="users-filter"
+  [placeholder]="'users.filterPlaceholder' | i18n"
+/>
+
+@if (facade.loadError$ | async; as err) {
+  @if (err) {
+    <p class="err">{{ err }}</p>
+  }
+}
+
+<app-users-table-presenter [users]="users()" />

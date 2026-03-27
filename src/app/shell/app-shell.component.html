@@ -1,0 +1,40 @@
+<div class="layout">
+  <a class="skip-link" href="#main-content">{{ 'app.skipToContent' | i18n }}</a>
+  <header class="bar" role="banner">
+    <span class="brand">{{ 'app.title' | i18n }}</span>
+    <nav class="nav" [attr.aria-label]="'app.mainNavigation' | i18n">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        >{{ 'nav.dashboard' | i18n }}</a
+      >
+      <a routerLink="/users" routerLinkActive="active">{{ 'nav.users' | i18n }}</a>
+      <a routerLink="/project-studio" routerLinkActive="active">{{ 'nav.projectStudio' | i18n }}</a>
+      <a routerLink="/projects" routerLinkActive="active">{{ 'nav.projects' | i18n }}</a>
+      <a routerLink="/analytics" routerLinkActive="active">{{ 'nav.analytics' | i18n }}</a>
+      <a routerLink="/realtime" routerLinkActive="active">{{ 'nav.realtime' | i18n }}</a>
+      <a routerLink="/planning" routerLinkActive="active">{{ 'nav.planning' | i18n }}</a>
+    </nav>
+    <div class="controls">
+      <label>
+        <span>{{ 'app.language' | i18n }}</span>
+        <select [value]="i18n.currentLang()" (change)="setLanguage($event)" [attr.aria-label]="'app.language' | i18n">
+          @for (lang of languages; track lang) {
+            <option [value]="lang">{{ ('lang.' + lang) | i18n }}</option>
+          }
+        </select>
+      </label>
+      <ui-button variant="secondary" (clicked)="theme.toggleTheme()" [ariaLabel]="'app.themeToggle' | i18n">
+        {{ (theme.currentTheme() === 'dark' ? 'app.lightMode' : 'app.darkMode') | i18n }}
+      </ui-button>
+    </div>
+    <div class="auth">
+      @if (auth.isAuthenticated()) {
+        <ui-button variant="ghost" (clicked)="logout()">{{ 'app.logout' | i18n }}</ui-button>
+      } @else {
+        <a routerLink="/login"><ui-button variant="secondary">{{ 'app.login' | i18n }}</ui-button></a>
+      }
+    </div>
+  </header>
+  <main id="main-content" class="main" role="main" tabindex="-1">
+    <router-outlet />
+  </main>
+</div>

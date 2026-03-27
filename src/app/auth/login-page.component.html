@@ -1,0 +1,10 @@
+<section class="card">
+  <h1>{{ 'login.title' | i18n }}</h1>
+  <p class="muted">
+    {{ 'login.description' | i18n }}
+  </p>
+  <div class="row">
+    <ui-button (clicked)="login()">{{ 'login.enterDemo' | i18n }}</ui-button>
+    <a routerLink="/dashboard"><ui-button variant="ghost">{{ 'login.goDashboard' | i18n }}</ui-button></a>
+  </div>
+</section>

@@ -1,0 +1,49 @@
+<section class="card">
+  <h1>{{ 'realtime.title' | i18n }}</h1>
+  <p class="muted">{{ 'realtime.subtitle' | i18n }}</p>
+</section>
+
+<section class="grid">
+  <article class="card">
+    <h2>{{ 'realtime.polling.title' | i18n }}</h2>
+    @if (polling(); as snapshot) {
+      <div class="metric"><span>CPU</span><strong>{{ snapshot.cpuPercent }}%</strong></div>
+      <div class="metric"><span>Queue</span><strong>{{ snapshot.queueDepth }}</strong></div>
+      <div class="meta">{{ snapshot.generatedAt | date: 'mediumTime' }}</div>
+    } @else {
+      <div class="muted">{{ 'app.loading' | i18n }}</div>
+    }
+  </article>
+
+  <article class="card">
+    <h2>{{ 'realtime.sse.title' | i18n }}</h2>
+    <ul class="stream">
+      @for (event of sseEvents(); track event.id) {
+        <li [class.warn]="event.level === 'warning'">
+          <strong>#{{ event.id }}</strong> {{ event.message }}
+          <span class="meta">{{ event.at | date: 'mediumTime' }}</span>
+        </li>
+      } @empty {
+        <li class="muted">{{ 'realtime.empty' | i18n }}</li>
+      }
+    </ul>
+  </article>
+
+  <article class="card">
+    <h2>{{ 'realtime.websocket.title' | i18n }}</h2>
+    <div class="meta">
+      {{ 'realtime.websocket.status' | i18n }}: {{ ('realtime.websocket.' + wsStatus()) | i18n }}
+    </div>
+    <ul class="stream">
+      @for (metric of wsMetrics(); track metric.sequence) {
+        <li>
+          <strong>#{{ metric.sequence }}</strong>
+          {{ 'realtime.websocket.throughput' | i18n }}: {{ metric.throughput }}
+          <span class="meta">{{ metric.at | date: 'mediumTime' }}</span>
+        </li>
+      } @empty {
+        <li class="muted">{{ 'realtime.empty' | i18n }}</li>
+      }
+    </ul>
+  </article>
+</section>
