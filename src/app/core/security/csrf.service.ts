@@ -11,6 +11,11 @@ export class CsrfService {
   constructor(private readonly http: HttpClient) {}
 
   async init(): Promise<void> {
+    if (this.isStaticPagesHost()) {
+      this.token.set(null);
+      return;
+    }
+
     const token = await firstValueFrom(
       this.http.get<CsrfTokenResponse>('/api/security/csrf-token').pipe(
         map((r) => r.token),
@@ -18,5 +23,10 @@ export class CsrfService {
       ),
     );
     this.token.set(token ?? null);
+  }
+
+  private isStaticPagesHost(): boolean {
+    const host = globalThis.location?.hostname ?? '';
+    return host.endsWith('github.io');
   }
 }
