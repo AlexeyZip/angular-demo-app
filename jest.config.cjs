@@ -19,4 +19,15 @@ module.exports = {
   moduleFileExtensions: ['ts', 'html', 'js', 'json', 'mjs'],
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$|@angular|rxjs))'],
+  coverageDirectory: '<rootDir>/coverage/jest',
+  coverageReporters: ['text-summary', 'lcov'],
+  collectCoverageFrom: ['src/**/*.ts', 'projects/**/*.ts', '!**/*.spec.ts', '!**/*.jest.spec.ts'],
+  coverageThreshold: {
+    global: {
+      branches: 0,
+      functions: 0,
+      lines: 0,
+      statements: 0,
+    },
+  },
 };
