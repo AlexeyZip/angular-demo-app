@@ -51,7 +51,7 @@ jobs:
         run: cp dist/enterprise-demo/browser/index.html dist/enterprise-demo/browser/404.html
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist/enterprise-demo/browser
 
