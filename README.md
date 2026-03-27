@@ -1,59 +1,56 @@
-# EnterpriseDemo
+# Enterprise Demo App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.22.
+[![CI](https://github.com/AlexeyZip/angular-demo-app/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexeyZip/angular-demo-app/actions/workflows/ci.yml)
+[![Deploy to GitHub Pages](https://github.com/AlexeyZip/angular-demo-app/actions/workflows/deploy.yml/badge.svg)](https://github.com/AlexeyZip/angular-demo-app/actions/workflows/deploy.yml)
 
-## Development server
+Demo enterprise-style Angular application with:
 
-To start a local development server, run:
+- Angular 19 (standalone, lazy routes, resolvers)
+- RxJS + NgRx
+- UI library (`projects/ui`) with reusable controls
+- Node/Express backend for demo API and realtime streams
+- CI/CD via GitHub Actions + GitHub Pages
 
-```bash
-ng serve
-```
+## Live Demo
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- [Open app](https://alexeyzip.github.io/angular-demo-app/)
 
-## Code scaffolding
+## Local Run
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Install dependencies:
 
 ```bash
-ng generate --help
+npm ci
 ```
 
-## Building
-
-To build the project run:
+Run frontend + backend:
 
 ```bash
-ng build
+npm run start:full
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Scripts
 
-## Running unit tests
+- `npm run lint` - type-check for CI
+- `npm run build` - production build
+- `npm run test:unit` - jest unit tests
+- `npm run test:unit:ci` - jest tests with coverage
+- `npm run e2e` - Playwright e2e
+- `npm run e2e:ci` - e2e in CI mode
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## CI/CD
 
-```bash
-ng test
-```
+### CI (`.github/workflows/ci.yml`)
 
-## Running end-to-end tests
+Runs on push to `main` and pull requests:
 
-For end-to-end (e2e) testing, run:
+1. `npm ci`
+2. `npm run lint`
+3. `npm run build`
+4. `npm run test:unit:ci` with coverage artifact upload
+5. `npm run e2e:ci`
+6. On e2e failure, uploads Playwright artifacts (`playwright-report`, `test-results`)
 
-```bash
-ng e2e
-```
+### CD (`.github/workflows/deploy.yml`)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Triggered after successful CI on `main`, builds app with proper `base-href` and deploys static output to GitHub Pages.

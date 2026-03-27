@@ -15,7 +15,7 @@
     "test:unit:ci": "jest --config jest.config.cjs --coverage --ci --runInBand",
     "test:unit:watch": "jest --config jest.config.cjs --watch",
     "e2e": "playwright test",
-    "e2e:ci": "playwright test --reporter=line",
+    "e2e:ci": "playwright test --reporter=line,html",
     "e2e:headed": "playwright test --headed",
     "e2e:install": "playwright install chromium"
   },
