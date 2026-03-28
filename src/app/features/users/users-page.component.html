@@ -15,7 +15,7 @@
   [placeholder]="'users.filterPlaceholder' | i18n"
 />
 
-@if (facade.loadError$ | async; as err) {
+@if (loadError(); as err) {
   @if (err) {
     <p class="err">{{ err }}</p>
   }

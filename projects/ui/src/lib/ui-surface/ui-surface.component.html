@@ -1,0 +1,14 @@
+<article class="surface">
+  <header class="head">
+    <div class="title"><ng-content select="[uiSurfaceTitle]" /></div>
+    <div class="actions"><ng-content select="[uiSurfaceActions]" /></div>
+  </header>
+
+  <section class="body">
+    <ng-content />
+  </section>
+
+  <footer class="footer">
+    <ng-content select="[uiSurfaceFooter]" />
+  </footer>
+</article>

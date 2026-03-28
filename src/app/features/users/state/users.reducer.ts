@@ -7,7 +7,7 @@ export type UsersLoadStatus = 'idle' | 'loading' | 'loaded' | 'error';
 
 export const usersAdapter: EntityAdapter<UserDto> = createEntityAdapter<UserDto>({
   selectId: (u) => u.id,
-  sortComparer: (a, b) => a.name.localeCompare(b.name, 'ru'),
+  sortComparer: (a, b) => a.name.localeCompare(b.name, 'en'),
 });
 
 export interface UsersState extends EntityState<UserDto> {
