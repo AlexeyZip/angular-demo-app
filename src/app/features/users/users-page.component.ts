@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +11,7 @@ import { UsersTablePresenter } from './presenters/users-table.presenter';
 @Component({
   selector: 'app-users-page',
   standalone: true,
-  imports: [AsyncPipe, ReactiveFormsModule, UiButtonComponent, UiInputComponent, UsersTablePresenter, I18nPipe],
+  imports: [ReactiveFormsModule, UiButtonComponent, UiInputComponent, UsersTablePresenter, I18nPipe],
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.scss',
 })
@@ -21,6 +20,7 @@ export class UsersPageComponent {
   readonly filter = new FormControl<string>('', { nonNullable: true });
 
   readonly users = toSignal(this.facade.users$, { initialValue: [] });
+  readonly loadError = toSignal(this.facade.loadError$, { initialValue: null });
 
   constructor() {
     this.filter.valueChanges

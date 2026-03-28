@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   AbstractControl,
@@ -55,7 +55,6 @@ type ProjectStudioForm = FormGroup<{
   selector: 'app-project-studio-page',
   standalone: true,
   imports: [
-    AsyncPipe,
     DatePipe,
     ReactiveFormsModule,
     RouterLink,
@@ -72,6 +71,15 @@ export class ProjectStudioPageComponent {
   private readonly api = inject(ProjectStudioApiService);
   private readonly i18n = inject(I18nService);
   readonly validationIssues = signal<string[]>([]);
+  readonly loadStatus = toSignal(this.facade.loadStatus$, { initialValue: 'idle' });
+  readonly saveStatus = toSignal(this.facade.saveStatus$, { initialValue: 'idle' });
+  readonly publishStatus = toSignal(this.facade.publishStatus$, { initialValue: 'idle' });
+  readonly loadError = toSignal(this.facade.loadError$, { initialValue: null });
+  readonly saveError = toSignal(this.facade.saveError$, { initialValue: null });
+  readonly publishError = toSignal(this.facade.publishError$, { initialValue: null });
+  readonly lastSavedAt = toSignal(this.facade.lastSavedAt$, { initialValue: null });
+  readonly version = toSignal(this.facade.version$, { initialValue: null });
+  readonly lastPublishedId = toSignal(this.facade.lastPublishedId$, { initialValue: null });
 
   readonly form: ProjectStudioForm = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(4)] }),

@@ -11,7 +11,7 @@
   </div>
 </section>
 
-@if (facade.loadError$ | async; as loadError) {
+@if (loadError(); as loadError) {
   @if (loadError) {
     <p class="err">{{ loadError }}</p>
   }
@@ -121,24 +121,24 @@
 </form>
 
 <section class="meta">
-  <span>{{ 'projectStudio.labels.load' | i18n }}: {{ facade.loadStatus$ | async }}</span>
-  <span>{{ 'projectStudio.labels.save' | i18n }}: {{ facade.saveStatus$ | async }}</span>
-  <span>{{ 'projectStudio.labels.publish' | i18n }}: {{ facade.publishStatus$ | async }}</span>
-  <span>{{ 'projectStudio.labels.version' | i18n }}: {{ facade.version$ | async }}</span>
-  @if (facade.lastSavedAt$ | async; as savedAt) {
+  <span>{{ 'projectStudio.labels.load' | i18n }}: {{ loadStatus() }}</span>
+  <span>{{ 'projectStudio.labels.save' | i18n }}: {{ saveStatus() }}</span>
+  <span>{{ 'projectStudio.labels.publish' | i18n }}: {{ publishStatus() }}</span>
+  <span>{{ 'projectStudio.labels.version' | i18n }}: {{ version() }}</span>
+  @if (lastSavedAt(); as savedAt) {
     <span>{{ 'projectStudio.labels.lastSaved' | i18n }}: {{ savedAt | date: 'mediumTime' }}</span>
   }
-  @if (facade.saveError$ | async; as saveError) {
+  @if (saveError(); as saveError) {
     @if (saveError) {
       <span class="err">{{ saveError }}</span>
     }
   }
-  @if (facade.publishError$ | async; as publishError) {
+  @if (publishError(); as publishError) {
     @if (publishError) {
       <span class="err">{{ publishError }}</span>
     }
   }
-  @if (facade.lastPublishedId$ | async; as publishedId) {
+  @if (lastPublishedId(); as publishedId) {
     @if (publishedId) {
       <a [routerLink]="['/projects', publishedId]">{{ 'projectStudio.openPublished' | i18n }}</a>
     }

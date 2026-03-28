@@ -1,10 +1,10 @@
-export type AppLanguage = 'ru' | 'uk' | 'en';
+export type AppLanguage = 'uk' | 'en';
 
 export interface TranslationTree {
   [key: string]: string | TranslationTree;
 }
 
-export const translations: Record<AppLanguage, TranslationTree> = {
+const translationsAll: Record<'ru' | AppLanguage, TranslationTree> = {
   ru: {
     app: {
       title: 'Enterprise Demo',
@@ -534,7 +534,6 @@ export const translations: Record<AppLanguage, TranslationTree> = {
       critical: 'Критичний',
     },
     lang: {
-      ru: 'Русский',
       uk: 'Українська',
       en: 'English',
     },
@@ -801,9 +800,13 @@ export const translations: Record<AppLanguage, TranslationTree> = {
       critical: 'Critical',
     },
     lang: {
-      ru: 'Russian',
       uk: 'Ukrainian',
       en: 'English',
     },
   },
+};
+
+export const translations: Record<AppLanguage, TranslationTree> = {
+  uk: translationsAll.uk,
+  en: translationsAll.en,
 };
