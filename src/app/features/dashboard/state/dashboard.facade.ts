@@ -15,7 +15,7 @@ import {
 } from './dashboard.selectors';
 
 /**
- * Слой ViewModel (MVVM): компоненты не ходят в Store напрямую.
+ * ViewModel layer (MVVM): components do not access Store directly.
  */
 @Injectable({ providedIn: 'root' })
 export class DashboardFacade {

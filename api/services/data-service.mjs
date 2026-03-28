@@ -1,8 +1,8 @@
-/** Model + in-memory store (MVC: данные отделены от контроллеров). */
+/** Model + in-memory store (MVC: data is separated from controllers). */
 
 const users = [
-  { id: '1', name: 'Анна Волкова', role: 'Admin', email: 'anna@example.com' },
-  { id: '2', name: 'Игорь Смирнов', role: 'Support', email: 'igor@example.com' },
+  { id: '1', name: 'Anna Walker', role: 'Admin', email: 'anna@example.com' },
+  { id: '2', name: 'Igor Smith', role: 'Support', email: 'igor@example.com' },
   { id: '3', name: 'Мария Ким', role: 'Analyst', email: 'maria@example.com' },
   { id: '4', name: 'Leo Park', role: 'Developer', email: 'leo@example.com' },
 ];
@@ -12,7 +12,7 @@ const usedProjectCodes = new Set(['ERP-ALPHA', 'CORE-OPS', 'FIN-2026']);
 const defaultProjectTemplate = {
   name: 'Internal Procurement Platform',
   code: 'PRC-2026',
-  description: 'Платформа управления заявками и закупками для внутренних команд.',
+  description: 'Platform for internal request and procurement workflows.',
   budget: 250000,
   riskLevel: 'medium',
   requiresComplianceReview: true,
@@ -21,8 +21,8 @@ const defaultProjectTemplate = {
     endDate: '2026-09-30',
   },
   stakeholders: [
-    { name: 'Анна Волкова', role: 'Product Owner', email: 'anna@example.com' },
-    { name: 'Игорь Смирнов', role: 'Tech Lead', email: 'igor@example.com' },
+    { name: 'Anna Walker', role: 'Product Owner', email: 'anna@example.com' },
+    { name: 'Igor Smith', role: 'Tech Lead', email: 'igor@example.com' },
   ],
   milestones: [
     { title: 'Discovery', dueDate: '2026-04-20', done: true },

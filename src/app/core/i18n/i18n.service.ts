@@ -7,7 +7,7 @@ const STORAGE_KEY = 'enterprise-demo-lang';
 export class I18nService {
   private readonly lang = signal<AppLanguage>(this.readInitial());
   readonly currentLang = this.lang.asReadonly();
-  readonly availableLanguages: AppLanguage[] = ['ru', 'uk', 'en'];
+  readonly availableLanguages: AppLanguage[] = ['uk', 'en'];
 
   setLanguage(language: AppLanguage): void {
     this.lang.set(language);
@@ -27,10 +27,10 @@ export class I18nService {
 
   private readInitial(): AppLanguage {
     const value = localStorage.getItem(STORAGE_KEY);
-    if (value === 'ru' || value === 'uk' || value === 'en') {
+    if (value === 'uk' || value === 'en') {
       return value;
     }
-    return 'ru';
+    return 'en';
   }
 
   private resolveByPath(tree: TranslationTree, key: string): string | null {

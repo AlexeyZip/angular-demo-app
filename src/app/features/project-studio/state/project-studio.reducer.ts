@@ -58,6 +58,10 @@ export const projectStudioReducer = createReducer(
     loadStatus: 'error',
     loadError: message,
   })),
+  on(ProjectStudioActions.loadDraftSuccess, (state, { draft }): ProjectStudioState => ({
+    ...state,
+    draft: draft ?? state.draft,
+  })),
   on(ProjectStudioActions.draftChanged, (state, { draft }): ProjectStudioState => ({
     ...state,
     draft,

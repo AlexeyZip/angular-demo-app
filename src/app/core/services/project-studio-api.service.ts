@@ -23,6 +23,10 @@ export class ProjectStudioApiService {
     return this.http.get<ProjectFormValue>(`${this.baseUrl}/projects/template`);
   }
 
+  getDraft(): Observable<ProjectFormValue | null> {
+    return this.http.get<ProjectFormValue | null>(`${this.baseUrl}/projects/draft`);
+  }
+
   validateCode(code: string): Observable<ValidateCodeResponse> {
     return this.http.post<ValidateCodeResponse>(`${this.baseUrl}/projects/validate-code`, { code });
   }

@@ -1,277 +1,10 @@
-export type AppLanguage = 'ru' | 'uk' | 'en';
+export type AppLanguage = 'uk' | 'en';
 
 export interface TranslationTree {
   [key: string]: string | TranslationTree;
 }
 
-export const translations: Record<AppLanguage, TranslationTree> = {
-  ru: {
-    app: {
-      title: 'Enterprise Demo',
-      loading: 'Загрузка…',
-      error: 'Ошибка',
-      open: 'Открыть',
-      close: 'Закрыть',
-      save: 'Сохранить',
-      refresh: 'Обновить',
-      reload: 'Перезагрузить',
-      login: 'Войти',
-      logout: 'Выйти',
-      darkMode: 'Тёмная тема',
-      lightMode: 'Светлая тема',
-      language: 'Язык',
-      skipToContent: 'Перейти к содержимому',
-      mainNavigation: 'Главная навигация',
-      themeToggle: 'Переключить тему',
-    },
-    nav: {
-      dashboard: 'Дашборд',
-      users: 'Пользователи',
-      projectStudio: 'Project Studio',
-      projects: 'Проекты',
-      analytics: 'Аналитика',
-      realtime: 'Realtime',
-      planning: 'Planning Studio',
-    },
-    login: {
-      title: 'Вход (демо)',
-      description:
-        'Раздел «Пользователи» защищён canActivate. Нажмите кнопку, чтобы выставить флаг в sessionStorage.',
-      enterDemo: 'Войти в демо-сессию',
-      goDashboard: 'На дашборд',
-    },
-    dashboard: {
-      title: 'Дашборд',
-      mvvm: 'MVVM: страница использует только DashboardFacade, не Store.',
-      reactiveTitle: 'Реактивная форма + CVA',
-      reactiveDesc: 'Поле из библиотеки ui реализует ControlValueAccessor.',
-      searchLocal: 'Поисковый запрос (локально)',
-      value: 'Значение',
-      quick: {
-        studio: 'Открыть Project Studio',
-        projects: 'Список проектов',
-        analytics: 'Открыть аналитику',
-      },
-      insights: {
-        highRisk: 'Проекты с высоким риском',
-        milestones: 'Ближайшие майлстоуны',
-        workload: 'Загрузка команды',
-        tasks: 'Задачи',
-        utilization: 'Утилизация',
-        empty: 'Нет данных',
-      },
-      api: {
-        ok: 'API в норме',
-        down: 'API недоступен',
-        checking: 'Проверка API…',
-      },
-      summary: {
-        activeUsers: 'Активные пользователи',
-        openTickets: 'Открытые тикеты',
-        revenue: 'Выручка, USD',
-        generatedAt: 'Сгенерировано',
-      },
-      errors: {
-        summaryLoad: 'Не удалось загрузить сводку',
-      },
-    },
-    users: {
-      title: 'Пользователи',
-      desc: 'Данные предзагружены через ResolveFn до активации маршрута. Состояние — NgRx Entity.',
-      filterLabel: 'Фильтр (store)',
-      filterPlaceholder: 'имя, email, роль…',
-      headers: {
-        name: 'Имя',
-        role: 'Роль',
-        email: 'Email',
-      },
-      errors: {
-        load: 'Не удалось загрузить пользователей',
-      },
-    },
-    projectStudio: {
-      title: 'Project Studio',
-      desc: 'Enterprise-форма: nested groups, dynamic arrays, cross-field + async validation, autosave через NgRx Effects.',
-      saveDraft: 'Сохранить черновик',
-      publish: 'Опубликовать проект',
-      openPublished: 'Открыть опубликованный проект',
-      fixBeforeSave: 'Исправь поля перед сохранением/публикацией',
-      labels: {
-        projectName: 'Название проекта',
-        projectCode: 'Код проекта',
-        budget: 'Бюджет, USD',
-        risk: 'Риск',
-        compliance: 'Требуется compliance review',
-        description: 'Описание',
-        startDate: 'Дата старта',
-        endDate: 'Дата окончания',
-        stakeholders: 'Участники',
-        milestones: 'Майлстоуны',
-        channels: 'Каналы уведомлений',
-        add: '+ Добавить',
-        remove: 'Удалить',
-        milestoneTitle: 'Название',
-        dueDate: 'Срок (YYYY-MM-DD)',
-        done: 'Готово',
-        load: 'Загрузка',
-        save: 'Сохранение',
-        publish: 'Публикация',
-        version: 'Версия',
-        lastSaved: 'Последнее сохранение',
-      },
-      channels: {
-        email: 'Email',
-        sms: 'SMS',
-        slack: 'Slack',
-      },
-      errors: {
-        codeTaken: 'Код уже используется.',
-        codeValidationFailed: 'Не удалось проверить уникальность кода (API недоступен).',
-        codePattern: 'Код: только A-Z, 0-9 и дефис, 3-20 символов.',
-        budget: 'Бюджет должен быть числом не меньше 10000.',
-        dateRange: 'Дата окончания не может быть раньше даты старта.',
-        loadTemplate: 'Не удалось загрузить шаблон проекта',
-        saveDraft: 'Не удалось сохранить черновик',
-        publish: 'Не удалось опубликовать проект',
-      },
-      validation: {
-        nameMin: 'Название проекта: минимум 4 символа.',
-        codeRequired: 'Код проекта обязателен.',
-        codeFormat: 'Код проекта: формат A-Z0-9- (3-20 символов).',
-        codeTaken: 'Код проекта уже занят.',
-        codeCheck: 'Не удалось проверить уникальность кода проекта.',
-        descriptionMin: 'Описание: минимум 20 символов.',
-        budgetMin: 'Бюджет: число от 10000 и выше.',
-        dateRange: 'Дата окончания должна быть не раньше даты старта.',
-        stakeholder: 'Участник #{index}: заполни имя, роль и корректный email.',
-        milestone: 'Майлстоун #{index}: заполни название и дату.',
-      },
-    },
-    projects: {
-      title: 'Проекты',
-      fromStudio: 'Создать из Project Studio',
-      search: 'Поиск по названию/коду',
-      empty: 'Проекты не найдены. Опубликуй проект из Project Studio.',
-      openDetails: 'Открыть детали',
-      backToList: '← К списку проектов',
-      budget: 'Бюджет',
-      risk: 'Риск',
-      created: 'Создан',
-      updated: 'Обновлён',
-      stakeholders: 'Участники',
-      milestones: 'Майлстоуны',
-      inProgress: 'В процессе',
-      done: 'Готово',
-      status: {
-        published: 'Опубликован',
-      },
-    },
-    analytics: {
-      title: 'Аналитика',
-      subtitle: 'AG Grid + Chart.js: оперативная аналитика портфеля проектов.',
-      loadingCharts: 'Загрузка графиков…',
-      loadingTable: 'Загрузка таблицы…',
-      kpi: {
-        projects: 'Проекты',
-        totalBudget: 'Суммарный бюджет',
-        avgBudget: 'Средний бюджет',
-        highRisk: 'Высокий риск',
-      },
-      charts: {
-        budgetTrend: 'Тренд бюджета',
-        riskDistribution: 'Распределение рисков',
-        planned: 'План',
-        actual: 'Факт',
-      },
-      table: {
-        title: 'Таблица портфеля',
-        project: 'Проект',
-        code: 'Код',
-        owner: 'Владелец',
-        budget: 'Бюджет',
-        risk: 'Риск',
-        progress: 'Прогресс %',
-        velocity: 'Скорость',
-        updated: 'Обновлено',
-      },
-    },
-    realtime: {
-      title: 'Realtime каналы',
-      subtitle: 'Демо трех транспортов: polling, SSE и WebSocket.',
-      empty: 'Пока нет событий',
-      polling: {
-        title: 'Polling (каждые 5 сек)',
-      },
-      sse: {
-        title: 'SSE поток событий',
-      },
-      websocket: {
-        title: 'WebSocket метрики',
-        status: 'Статус',
-        throughput: 'Пропускная способность',
-        connecting: 'подключение',
-        open: 'подключено',
-        closed: 'закрыто',
-      },
-    },
-    planning: {
-      title: 'Planning Studio',
-      subtitle:
-        'Портфельное планирование: зависимости задач (Graph), ёмкость команд (Tree), очередь готовых задач (Queue) и порядок исполнения (LinkedList).',
-      strategy: 'Стратегия приоритизации',
-      teamFocus: 'Фокус по команде',
-      teamTree: 'Дерево команд и capacity',
-      graphTitle: 'Граф зависимостей',
-      capacityLine: 'Нагрузка',
-      nodeDetails: 'Детали узла графа',
-      node: {
-        team: 'Команда',
-        effort: 'Трудоёмкость',
-        value: 'Ценность',
-        risk: 'Риск',
-        dependsOn: 'Зависит от',
-      },
-      legend: {
-        scheduled: 'Запланировано',
-        blocked: 'Заблокировано',
-        dependsOn: 'Зависимость',
-      },
-      none: 'нет',
-      recalculate: 'Пересчитать',
-      metrics: 'Метрики плана',
-      execution: 'Порядок исполнения',
-      blocked: 'Заблокированные задачи',
-      noBlocked: 'Нет заблокированных задач',
-      empty: 'План пуст',
-      score: 'Скор',
-      metric: {
-        scheduled: 'Запланировано',
-        blocked: 'Заблокировано',
-        total: 'Всего задач',
-        edges: 'Рёбра зависимостей',
-        capacity: 'Использовано capacity',
-      },
-      strategies: {
-        balanced: 'Balanced',
-        valueFirst: 'Value first',
-        riskFirst: 'Risk first',
-      },
-      teams: {
-        all: 'Все команды',
-      },
-    },
-    risk: {
-      low: 'Низкий',
-      medium: 'Средний',
-      high: 'Высокий',
-      critical: 'Критический',
-    },
-    lang: {
-      ru: 'Русский',
-      uk: 'Украинский',
-      en: 'English',
-    },
-  },
+const translationsAll: Record<AppLanguage, TranslationTree> = {
   uk: {
     app: {
       title: 'Enterprise Demo',
@@ -393,7 +126,8 @@ export const translations: Record<AppLanguage, TranslationTree> = {
       },
       errors: {
         codeTaken: 'Код уже використовується.',
-        codeValidationFailed: 'Не вдалося перевірити унікальність коду (API недоступний).',
+        codeValidationFailed:
+          'Не вдалося перевірити унікальність коду (API недоступний).',
         codePattern: 'Код: тільки A-Z, 0-9 і дефіс, 3-20 символів.',
         budget: 'Бюджет має бути числом не менше 10000.',
         dateRange: 'Дата завершення не може бути раніше дати старту.',
@@ -534,7 +268,6 @@ export const translations: Record<AppLanguage, TranslationTree> = {
       critical: 'Критичний',
     },
     lang: {
-      ru: 'Русский',
       uk: 'Українська',
       en: 'English',
     },
@@ -578,7 +311,8 @@ export const translations: Record<AppLanguage, TranslationTree> = {
       title: 'Dashboard',
       mvvm: 'MVVM: this page uses only DashboardFacade, not Store directly.',
       reactiveTitle: 'Reactive form + CVA',
-      reactiveDesc: 'The input from ui library implements ControlValueAccessor.',
+      reactiveDesc:
+        'The input from ui library implements ControlValueAccessor.',
       searchLocal: 'Search query (local)',
       value: 'Value',
       quick: {
@@ -660,7 +394,8 @@ export const translations: Record<AppLanguage, TranslationTree> = {
       },
       errors: {
         codeTaken: 'Code is already in use.',
-        codeValidationFailed: 'Failed to validate code uniqueness (API unavailable).',
+        codeValidationFailed:
+          'Failed to validate code uniqueness (API unavailable).',
         codePattern: 'Code: only A-Z, 0-9 and dash, 3-20 chars.',
         budget: 'Budget must be a number greater than or equal to 10000.',
         dateRange: 'End date cannot be earlier than start date.',
@@ -677,7 +412,8 @@ export const translations: Record<AppLanguage, TranslationTree> = {
         descriptionMin: 'Description: minimum 20 characters.',
         budgetMin: 'Budget: number from 10000 and above.',
         dateRange: 'End date must be greater than or equal to start date.',
-        stakeholder: 'Stakeholder #{index}: provide name, role and valid email.',
+        stakeholder:
+          'Stakeholder #{index}: provide name, role and valid email.',
         milestone: 'Milestone #{index}: provide title and date.',
       },
     },
@@ -702,7 +438,8 @@ export const translations: Record<AppLanguage, TranslationTree> = {
     },
     analytics: {
       title: 'Analytics',
-      subtitle: 'AG Grid + Chart.js: operational analytics of project portfolio.',
+      subtitle:
+        'AG Grid + Chart.js: operational analytics of project portfolio.',
       loadingCharts: 'Loading charts…',
       loadingTable: 'Loading table…',
       kpi: {
@@ -801,9 +538,13 @@ export const translations: Record<AppLanguage, TranslationTree> = {
       critical: 'Critical',
     },
     lang: {
-      ru: 'Russian',
       uk: 'Ukrainian',
       en: 'English',
     },
   },
+};
+
+export const translations: Record<AppLanguage, TranslationTree> = {
+  uk: translationsAll.uk,
+  en: translationsAll.en,
 };
