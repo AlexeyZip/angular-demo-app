@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 const KEY = 'enterprise-demo-session';
 
 /**
- * Упрощённая «сессия» для демонстрации route guards.
+ * Lightweight demo session storage for route-guard behavior.
  */
 @Injectable({ providedIn: 'root' })
 export class SessionAuthService {

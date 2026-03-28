@@ -4,7 +4,7 @@ import { DashboardSummaryDto } from '../../../core/services/dashboard-api.servic
 import { I18nPipe } from '../../../core/i18n/i18n.pipe';
 
 /**
- * «Глупый» компонент (View): только входные данные, без Store.
+ * Dumb/presentational component: inputs only, no Store access.
  */
 @Component({
   selector: 'app-dashboard-summary-presenter',

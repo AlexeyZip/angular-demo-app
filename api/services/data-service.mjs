@@ -1,33 +1,33 @@
-/** Model + in-memory store (MVC: данные отделены от контроллеров). */
+/** Model + in-memory store (MVC: data is separated from controllers). */
 
 const users = [
-  { id: '1', name: 'Anna Walker', role: 'Admin', email: 'anna@example.com' },
-  { id: '2', name: 'Igor Smith', role: 'Support', email: 'igor@example.com' },
-  { id: '3', name: 'Maria Kim', role: 'Analyst', email: 'maria@example.com' },
-  { id: '4', name: 'Leo Park', role: 'Developer', email: 'leo@example.com' },
+  { id: "1", name: "Anna Walker", role: "Admin", email: "anna@example.com" },
+  { id: "2", name: "Igor Smith", role: "Support", email: "igor@example.com" },
+  { id: "3", name: "Maria Kim", role: "Analyst", email: "maria@example.com" },
+  { id: "4", name: "Leo Park", role: "Developer", email: "leo@example.com" },
 ];
 
-const usedProjectCodes = new Set(['ERP-ALPHA', 'CORE-OPS', 'FIN-2026']);
+const usedProjectCodes = new Set(["ERP-ALPHA", "CORE-OPS", "FIN-2026"]);
 
 const defaultProjectTemplate = {
-  name: 'Internal Procurement Platform',
-  code: 'PRC-2026',
-  description: 'Platform for internal request and procurement workflows.',
+  name: "Internal Procurement Platform",
+  code: "PRC-2026",
+  description: "Platform for internal request and procurement workflows.",
   budget: 250000,
-  riskLevel: 'medium',
+  riskLevel: "medium",
   requiresComplianceReview: true,
   schedule: {
-    startDate: '2026-04-01',
-    endDate: '2026-09-30',
+    startDate: "2026-04-01",
+    endDate: "2026-09-30",
   },
   stakeholders: [
-    { name: 'Anna Walker', role: 'Product Owner', email: 'anna@example.com' },
-    { name: 'Igor Smith', role: 'Tech Lead', email: 'igor@example.com' },
+    { name: "Anna Walker", role: "Product Owner", email: "anna@example.com" },
+    { name: "Igor Smith", role: "Tech Lead", email: "igor@example.com" },
   ],
   milestones: [
-    { title: 'Discovery', dueDate: '2026-04-20', done: true },
-    { title: 'MVP Release', dueDate: '2026-06-30', done: false },
-    { title: 'Production Rollout', dueDate: '2026-09-20', done: false },
+    { title: "Discovery", dueDate: "2026-04-20", done: true },
+    { title: "MVP Release", dueDate: "2026-06-30", done: false },
+    { title: "Production Rollout", dueDate: "2026-09-20", done: false },
   ],
   channels: {
     email: true,
@@ -39,12 +39,12 @@ const defaultProjectTemplate = {
 let latestDraft = null;
 const publishedProjects = [
   {
-    id: 'erp-alpha',
+    id: "erp-alpha",
     ...structuredClone(defaultProjectTemplate),
-    code: 'ERP-ALPHA',
-    status: 'published',
-    createdAt: '2026-02-10T11:20:00.000Z',
-    updatedAt: '2026-02-15T10:12:00.000Z',
+    code: "ERP-ALPHA",
+    status: "published",
+    createdAt: "2026-02-10T11:20:00.000Z",
+    updatedAt: "2026-02-15T10:12:00.000Z",
   },
 ];
 
@@ -63,7 +63,7 @@ export function getDashboardSummary() {
 
 export function getDashboardInsights() {
   const highRiskProjects = publishedProjects
-    .filter((p) => p.riskLevel === 'high' || p.riskLevel === 'critical')
+    .filter((p) => p.riskLevel === "high" || p.riskLevel === "critical")
     .map((p) => ({
       id: p.id,
       name: p.name,
@@ -106,7 +106,9 @@ export function getProjectTemplate() {
 }
 
 export function isProjectCodeUnique(code) {
-  const normalized = String(code ?? '').trim().toUpperCase();
+  const normalized = String(code ?? "")
+    .trim()
+    .toUpperCase();
   if (!normalized) {
     return false;
   }
@@ -116,7 +118,9 @@ export function isProjectCodeUnique(code) {
 export function saveProjectDraft(draft) {
   latestDraft = {
     ...draft,
-    code: String(draft.code ?? '').trim().toUpperCase(),
+    code: String(draft.code ?? "")
+      .trim()
+      .toUpperCase(),
     savedAt: new Date().toISOString(),
     version: (latestDraft?.version ?? 0) + 1,
   };
@@ -145,7 +149,9 @@ export function getPublishedProjectById(id) {
 
 export function publishProject(payload) {
   const now = new Date().toISOString();
-  const code = String(payload.code ?? '').trim().toUpperCase();
+  const code = String(payload.code ?? "")
+    .trim()
+    .toUpperCase();
   const existing = publishedProjects.find((p) => p.code === code);
 
   if (existing) {
@@ -153,7 +159,7 @@ export function publishProject(payload) {
       ...existing,
       ...payload,
       code,
-      status: 'published',
+      status: "published",
       updatedAt: now,
     };
     const index = publishedProjects.findIndex((p) => p.id === existing.id);
@@ -162,12 +168,12 @@ export function publishProject(payload) {
     return updated;
   }
 
-  const id = `${code.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}`;
+  const id = `${code.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
   const created = {
     id,
     ...payload,
     code,
-    status: 'published',
+    status: "published",
     createdAt: now,
     updatedAt: now,
   };
@@ -179,17 +185,20 @@ export function publishProject(payload) {
 
 export function getAnalyticsOverview() {
   const totalProjects = publishedProjects.length;
-  const totalBudget = publishedProjects.reduce((acc, p) => acc + (Number(p.budget) || 0), 0);
+  const totalBudget = publishedProjects.reduce(
+    (acc, p) => acc + (Number(p.budget) || 0),
+    0,
+  );
   const avgBudget = totalProjects ? Math.round(totalBudget / totalProjects) : 0;
   const highRiskCount = publishedProjects.filter(
-    (p) => p.riskLevel === 'high' || p.riskLevel === 'critical',
+    (p) => p.riskLevel === "high" || p.riskLevel === "critical",
   ).length;
 
   const projectRows = publishedProjects.map((p, idx) => ({
     id: p.id,
     name: p.name,
     code: p.code,
-    owner: p.stakeholders?.[0]?.name ?? 'N/A',
+    owner: p.stakeholders?.[0]?.name ?? "N/A",
     budget: Number(p.budget) || 0,
     riskLevel: p.riskLevel,
     status: p.status,
@@ -198,13 +207,13 @@ export function getAnalyticsOverview() {
     updatedAt: p.updatedAt,
   }));
 
-  const riskLevels = ['low', 'medium', 'high', 'critical'];
+  const riskLevels = ["low", "medium", "high", "critical"];
   const riskDistribution = riskLevels.map((level) => ({
     level,
     count: publishedProjects.filter((p) => p.riskLevel === level).length,
   }));
 
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
   const monthlyBudgetTrend = months.map((month, i) => ({
     month,
     planned: 140000 + i * 22000,
@@ -228,28 +237,28 @@ export function getPlanningScenario() {
   return {
     teams: [
       {
-        id: 'team-platform',
-        name: 'Platform Team',
+        id: "team-platform",
+        name: "Platform Team",
         capacity: 14,
-        skills: ['backend', 'api'],
+        skills: ["backend", "api"],
         children: [
           {
-            id: 'team-platform-sec',
-            name: 'Platform Security',
+            id: "team-platform-sec",
+            name: "Platform Security",
             capacity: 10,
-            skills: ['security', 'backend'],
+            skills: ["security", "backend"],
             children: [
               {
-                id: 'team-identity',
-                name: 'Identity Squad',
+                id: "team-identity",
+                name: "Identity Squad",
                 capacity: 8,
-                skills: ['iam', 'oauth'],
+                skills: ["iam", "oauth"],
                 children: [
                   {
-                    id: 'team-authz',
-                    name: 'Authorization Pod',
+                    id: "team-authz",
+                    name: "Authorization Pod",
                     capacity: 6,
-                    skills: ['oauth'],
+                    skills: ["oauth"],
                   },
                 ],
               },
@@ -258,50 +267,50 @@ export function getPlanningScenario() {
         ],
       },
       {
-        id: 'team-web',
-        name: 'Web Team',
+        id: "team-web",
+        name: "Web Team",
         capacity: 12,
-        skills: ['frontend'],
+        skills: ["frontend"],
         children: [
           {
-            id: 'team-experience',
-            name: 'Experience Squad',
+            id: "team-experience",
+            name: "Experience Squad",
             capacity: 10,
-            skills: ['ux', 'frontend'],
+            skills: ["ux", "frontend"],
             children: [
               {
-                id: 'team-mobile',
-                name: 'Mobile Pod',
+                id: "team-mobile",
+                name: "Mobile Pod",
                 capacity: 8,
-                skills: ['mobile', 'frontend'],
+                skills: ["mobile", "frontend"],
               },
             ],
           },
         ],
       },
       {
-        id: 'team-data',
-        name: 'Data Team',
+        id: "team-data",
+        name: "Data Team",
         capacity: 10,
-        skills: ['data'],
+        skills: ["data"],
         children: [
           {
-            id: 'team-analytics',
-            name: 'Analytics Squad',
+            id: "team-analytics",
+            name: "Analytics Squad",
             capacity: 8,
-            skills: ['analytics', 'data'],
+            skills: ["analytics", "data"],
             children: [
               {
-                id: 'team-ml',
-                name: 'ML Pod',
+                id: "team-ml",
+                name: "ML Pod",
                 capacity: 8,
-                skills: ['ml', 'analytics'],
+                skills: ["ml", "analytics"],
                 children: [
                   {
-                    id: 'team-mlops',
-                    name: 'MLOps Cell',
+                    id: "team-mlops",
+                    name: "MLOps Cell",
                     capacity: 6,
-                    skills: ['mlops', 'ml'],
+                    skills: ["mlops", "ml"],
                   },
                 ],
               },
@@ -312,94 +321,94 @@ export function getPlanningScenario() {
     ],
     items: [
       {
-        id: 'arch-foundation',
-        title: 'Architecture foundation',
+        id: "arch-foundation",
+        title: "Architecture foundation",
         effort: 8,
         value: 5,
         risk: 2,
-        skills: ['backend', 'api'],
+        skills: ["backend", "api"],
         dependsOn: [],
       },
       {
-        id: 'security-gateway',
-        title: 'Security gateway',
+        id: "security-gateway",
+        title: "Security gateway",
         effort: 10,
         value: 7,
         risk: 5,
-        skills: ['security', 'backend'],
-        dependsOn: ['arch-foundation'],
+        skills: ["security", "backend"],
+        dependsOn: ["arch-foundation"],
       },
       {
-        id: 'identity-federation',
-        title: 'Identity federation',
+        id: "identity-federation",
+        title: "Identity federation",
         effort: 7,
         value: 8,
         risk: 5,
-        skills: ['iam', 'oauth'],
-        dependsOn: ['security-gateway'],
+        skills: ["iam", "oauth"],
+        dependsOn: ["security-gateway"],
       },
       {
-        id: 'user-portal',
-        title: 'User portal',
+        id: "user-portal",
+        title: "User portal",
         effort: 12,
         value: 9,
         risk: 3,
-        skills: ['frontend', 'ux'],
-        dependsOn: ['arch-foundation'],
+        skills: ["frontend", "ux"],
+        dependsOn: ["arch-foundation"],
       },
       {
-        id: 'mobile-workspace',
-        title: 'Mobile workspace',
+        id: "mobile-workspace",
+        title: "Mobile workspace",
         effort: 7,
         value: 7,
         risk: 3,
-        skills: ['frontend', 'mobile'],
-        dependsOn: ['user-portal'],
+        skills: ["frontend", "mobile"],
+        dependsOn: ["user-portal"],
       },
       {
-        id: 'portfolio-analytics',
-        title: 'Portfolio analytics',
+        id: "portfolio-analytics",
+        title: "Portfolio analytics",
         effort: 14,
         value: 8,
         risk: 4,
-        skills: ['data', 'analytics'],
-        dependsOn: ['arch-foundation'],
+        skills: ["data", "analytics"],
+        dependsOn: ["arch-foundation"],
       },
       {
-        id: 'risk-model',
-        title: 'Risk model',
+        id: "risk-model",
+        title: "Risk model",
         effort: 8,
         value: 8,
         risk: 4,
-        skills: ['ml', 'analytics'],
-        dependsOn: ['portfolio-analytics'],
+        skills: ["ml", "analytics"],
+        dependsOn: ["portfolio-analytics"],
       },
       {
-        id: 'model-ops',
-        title: 'Model ops pipeline',
+        id: "model-ops",
+        title: "Model ops pipeline",
         effort: 7,
         value: 7,
         risk: 4,
-        skills: ['mlops', 'ml'],
-        dependsOn: ['risk-model'],
+        skills: ["mlops", "ml"],
+        dependsOn: ["risk-model"],
       },
       {
-        id: 'audit-trail',
-        title: 'Audit trail',
+        id: "audit-trail",
+        title: "Audit trail",
         effort: 6,
         value: 6,
         risk: 4,
-        skills: ['backend', 'security'],
-        dependsOn: ['security-gateway'],
+        skills: ["backend", "security"],
+        dependsOn: ["security-gateway"],
       },
       {
-        id: 'cross-team-dashboard',
-        title: 'Cross-team dashboard',
+        id: "cross-team-dashboard",
+        title: "Cross-team dashboard",
         effort: 9,
         value: 8,
         risk: 2,
-        skills: ['frontend', 'analytics'],
-        dependsOn: ['user-portal', 'portfolio-analytics'],
+        skills: ["frontend", "analytics"],
+        dependsOn: ["user-portal", "portfolio-analytics"],
       },
     ],
   };

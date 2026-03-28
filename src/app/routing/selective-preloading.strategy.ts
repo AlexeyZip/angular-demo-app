@@ -3,7 +3,7 @@ import { PreloadingStrategy, Route } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 /**
- * Предзагрузка только маршрутов с data['preload'] === true (имитация поведения «микрофронта»).
+ * Preload only routes marked with data['preload'] === true.
  */
 @Injectable({ providedIn: 'root' })
 export class SelectivePreloadingStrategy implements PreloadingStrategy {

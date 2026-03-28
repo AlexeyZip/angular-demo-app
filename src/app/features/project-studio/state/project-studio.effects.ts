@@ -41,6 +41,31 @@ export class ProjectStudioEffects {
     ),
   );
 
+  readonly loadDraftAfterTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectStudioActions.loadTemplateSuccess),
+      map(() => ProjectStudioActions.loadDraft()),
+    ),
+  );
+
+  readonly loadDraft$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectStudioActions.loadDraft),
+      mergeMap(() =>
+        this.api.getDraft().pipe(
+          map((draft) => ProjectStudioActions.loadDraftSuccess({ draft })),
+          catchError(() =>
+            of(
+              ProjectStudioActions.loadDraftFailure({
+                message: this.i18n.translate('projectStudio.errors.loadTemplate'),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   readonly autoSave$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProjectStudioActions.draftChanged),

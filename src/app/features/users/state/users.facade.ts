@@ -33,7 +33,7 @@ export class UsersFacade {
   }
 
   /**
-   * ResolveFn: дождаться терминального состояния загрузки перед открытием страницы.
+   * ResolveFn waits for a terminal load state before route activation.
    */
   ensureLoaded(): Observable<void> {
     this.store.dispatch(UsersActions.enterPage());
