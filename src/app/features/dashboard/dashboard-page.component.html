@@ -4,9 +4,7 @@
     <p class="muted">{{ 'dashboard.mvvm' | i18n }}</p>
   </div>
   <div class="row">
-    <span class="health" role="status" aria-live="polite" [class.ok]="facade.apiHealthy$ | async">{{
-      healthLabel()
-    }}</span>
+    <span class="health" role="status" aria-live="polite" [class.ok]="apiHealthy()">{{ healthLabel() }}</span>
     <ui-button variant="secondary" (clicked)="facade.reload()">{{ 'app.refresh' | i18n }}</ui-button>
   </div>
 </section>
@@ -19,21 +17,57 @@
 </div>
 
 <section class="quick">
-  <a routerLink="/project-studio">{{ 'dashboard.quick.studio' | i18n }}</a>
-  <a routerLink="/projects">{{ 'dashboard.quick.projects' | i18n }}</a>
-  <a routerLink="/analytics">{{ 'dashboard.quick.analytics' | i18n }}</a>
+  <a routerLink="/project-studio" [appTooltip]="'Create or publish a project from studio'">{{
+    'dashboard.quick.studio' | i18n
+  }}</a>
+  <a routerLink="/projects" [appTooltip]="'Open published projects list'">{{ 'dashboard.quick.projects' | i18n }}</a>
+  <a routerLink="/analytics" [appTooltip]="'Open portfolio analytics and AG Grid'">{{
+    'dashboard.quick.analytics' | i18n
+  }}</a>
 </section>
 
-@if (facade.status$ | async; as st) {
+<ui-surface class="templating-showcase">
+  <ng-container uiSurfaceTitle>Portfolio spotlight</ng-container>
+  <ng-container uiSurfaceActions
+    >HR: {{ pulseStats().highRisk }} · MS: {{ pulseStats().milestones }} · WL: {{ pulseStats().overloaded }}</ng-container
+  >
+
+  <ng-container *appIfHasData="spotlightItems(); else spotlightEmptyTpl">
+    <ui-template-list [items]="spotlightItems()" [itemTemplate]="spotlightItemTpl" [trackBy]="trackBySpotlight" />
+  </ng-container>
+
+  <ng-template #spotlightItemTpl let-item let-index="index">
+    <div class="templating-item">
+      <div class="templating-main">
+        <a [routerLink]="item.route" [appTooltip]="item.tooltip">{{ index + 1 }}. {{ item.title }}</a>
+        <small>{{ item.subtitle }}</small>
+      </div>
+      <span class="tag" [appTooltip]="item.tooltip">{{ item.badge }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #spotlightEmptyTpl>
+    <p class="muted">
+      Data is currently unavailable. API status: <strong>{{ healthLabel() }}</strong
+      >.
+    </p>
+  </ng-template>
+
+  <ng-container uiSurfaceFooter>
+    <span class="muted">Avg utilization: <strong>{{ pulseStats().avgUtilization }}%</strong></span>
+  </ng-container>
+</ui-surface>
+
+@if (status(); as st) {
   @if (st === 'loading') {
     <p class="muted">{{ 'app.loading' | i18n }}</p>
   }
   @if (st === 'error') {
-    <p class="err">{{ 'app.error' | i18n }}: {{ facade.error$ | async }}</p>
+    <p class="err">{{ 'app.error' | i18n }}: {{ loadError() }}</p>
   }
 }
 
-<app-dashboard-summary-presenter [summary]="facade.summary$ | async" />
+<app-dashboard-summary-presenter [summary]="summary()" />
 
 <section class="grid-2">
   <article class="card">

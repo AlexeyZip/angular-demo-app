@@ -1,0 +1,17 @@
+@if (items().length > 0) {
+  @for (item of items(); track trackBy()($index, item); let i = $index) {
+    <ng-container
+      [ngTemplateOutlet]="itemTemplate()"
+      [ngTemplateOutletContext]="{
+        $implicit: item,
+        index: i
+      }"
+    />
+  }
+} @else {
+  @if (emptyTemplate()) {
+    <ng-container [ngTemplateOutlet]="emptyTemplate()!" />
+  } @else {
+    <p class="empty">No data.</p>
+  }
+}

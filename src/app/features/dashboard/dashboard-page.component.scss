@@ -52,6 +52,38 @@ h2 {
   border-radius: 999px;
 }
 
+.templating-showcase {
+  margin-top: 1rem;
+}
+
+.templating-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.templating-main {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.templating-main small {
+  color: #64748b;
+}
+
+.templating-item:last-child {
+  border-bottom: none;
+}
+
+.templating-item a {
+  color: #1e40af;
+  text-decoration: none;
+  font-weight: 600;
+}
+
 .grid-2 {
   margin-top: 1rem;
   display: grid;
