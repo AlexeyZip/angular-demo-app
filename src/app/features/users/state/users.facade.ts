@@ -32,9 +32,6 @@ export class UsersFacade {
     this.store.dispatch(UsersActions.loadUsers());
   }
 
-  /**
-   * ResolveFn: дождаться терминального состояния загрузки перед открытием страницы.
-   */
   ensureLoaded(): Observable<void> {
     this.store.dispatch(UsersActions.enterPage());
     return this.store.select(selectUsersLoadStatus).pipe(
